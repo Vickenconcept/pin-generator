@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->string('name');
+            $table->string('path'); // Path to the template image
+            $table->json('editable_regions'); // JSON to store editable regions
             $table->timestamps();
         });
     }

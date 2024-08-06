@@ -12,7 +12,11 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        //
+        return view('templates.index');
+    }
+    public function template_build()
+    {
+        return view('templates.build');
     }
 
     /**
@@ -28,7 +32,23 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'required|image|max:2048', // Ensure the image is valid and not too large
+            'editable_regions' => 'required|array',
+        ]);
+
+        // Handle the image upload
+        $imagePath = $request->file('image')->store('templates', 'public');
+
+        // Create the template
+        $template = Template::create([
+            'name' => $request->input('name'),
+            'path' => $imagePath,
+            'editable_regions' => json_encode($request->input('editable_regions')),
+        ]);
+
+        return response()->json(['message' => 'Template created successfully!', 'template' => $template], 201);
     }
 
     /**

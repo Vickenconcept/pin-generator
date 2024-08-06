@@ -3,13 +3,12 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PinController;
+use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-
-
 
 
 Route::middleware('guest')->group(function () {
@@ -27,14 +26,14 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('pins/create', [PinController::class, 'create'])->name('pins.create');
-    Route::post('pins', [PinController::class, 'store'])->name('pins.store');
-    Route::get('pins/{pin}/generate', [PinController::class, 'generatePinImage'])->name('pins.generate');
+    Route::resource('templates', TemplateController::class);
+    Route::get('templates-builder', [TemplateController::class, 'template_build'])->name('template.build');
+    Route::resource('pins', PinController::class);
+    Route::post('pins/generate-random', [PinController::class, 'generateRandomPins'])->name('pins.generateRandom');
 
 
     Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
