@@ -32,8 +32,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('templates', TemplateController::class);
     Route::get('templates-builder', [TemplateController::class, 'template_build'])->name('template.build');
-    Route::resource('pins', PinController::class);
+    Route::post('upload-video', [TemplateController::class, 'uploadVideo'])->name('uploadVideo');
+    
+    Route::get('pins/generate', [PinController::class, 'generate'])->name('pins.generate');
     Route::post('pins/generate-random', [PinController::class, 'generateRandomPins'])->name('pins.generateRandom');
+    Route::resource('pins', PinController::class);
 
 
     Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');

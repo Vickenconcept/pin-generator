@@ -34,7 +34,7 @@ class AuthController extends Controller
                 'role' => 'sometimes',
                 'referrer_id' => 'sometimes'
             ]);
-            
+
             $data['role'] = 'user';
             $data['referrer_id'] = $referrer ? $referrer->id : null;
 
@@ -44,12 +44,11 @@ class AuthController extends Controller
             if ($e->getCode() == 23000) {
                 return redirect()->back()->withInput()->withErrors(['error' => 'A duplicate entry error occurred. Please try again.']);
             }
-        
         }
 
         // event(new Registered($user));
 
-    
+
         // auth()->logout();
         return $request->wantsJson()
             ? Response::api(['data' => $user])
@@ -64,7 +63,19 @@ class AuthController extends Controller
                 : back()->with('invalidCredential', 'Invalid Credentials');
         }
 
-        return  to_route('home');
+        $userData = $this->createAccessToken();
+
+        return redirect(session()->pull('url.intended', 'pins/generate'));
+    }
+
+    private function createAccessToken(): User
+    {
+        $user = user();
+        $user->token = $user->createToken($user->email)->plainTextToken;
+
+        session()->put('access_token', $user->token);
+
+        return $user;
     }
 
     public function logout(Request $request)

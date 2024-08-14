@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('template_id');
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->text('image_path')->nullable();
-            $table->text('url')->nullable();
+            $table->string('name');
+            $table->text('path'); // Path to the template image
+            $table->integer('width'); // Path to the template width
+            $table->integer('height'); // Path to the template height
+            $table->json('editable_regions'); // JSON to store editable regions
             $table->timestamps();
         });
     }

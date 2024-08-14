@@ -22,7 +22,8 @@ class TemplateSeeder extends Seeder
                 'editable_regions' => json_encode([
                     'title' => ['x' => 50, 'y' => 50, 'width' => 500, 'height' => 100],
                     'description' => ['x' => 50, 'y' => 200, 'width' => 500, 'height' => 200],
-                    'image' => ['x' => 50, 'y' => 450, 'width' => 500, 'height' => 400]
+                    'image' => ['x' => 50, 'y' => 450, 'width' => 500, 'height' => 400],
+                    'url' => ['x' => 50, 'y' => 550, 'width' => 500, 'height' => 100]
                 ]),
                 'created_at' => now(),
                 'updated_at' => now(),

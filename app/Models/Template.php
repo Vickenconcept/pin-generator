@@ -9,6 +9,6 @@ class Template extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'path', 'editable_regions'];
+    protected $fillable = ['name', 'path', 'editable_regions', 'width', 'height'];
     protected $casts = ['editable_regions' => 'array'];
 }
