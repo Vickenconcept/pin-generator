@@ -19,6 +19,24 @@ return new class extends Migration
             $table->integer('width'); // Path to the template width
             $table->integer('height'); // Path to the template height
             $table->json('editable_regions'); // JSON to store editable regions
+            $table->enum('can_delete',[0,1])->default(0); 
+            $table->enum('type', [
+                'blocks', 
+                'interior', 
+                'multiimages', 
+                'basics', 
+                'educational', 
+                'grey-style', 
+                'pastel', 
+                'recipe', 
+                'shop', 
+                'splatter', 
+                'text-only', 
+                'wavey', 
+                'minimalist',
+                'custom'
+            ])->nullable();
+            $table->boolean('favorite')->default(false);
             $table->timestamps();
         });
     }

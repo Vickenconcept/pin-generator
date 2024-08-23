@@ -14,7 +14,7 @@ class TemplateController extends Controller
     public function index(Request $request)
     {
 
-         $templates = Template::get();
+         $templates = Template::get()->shuffle();
 
          foreach ($templates as $template) {
              $template->editable_regions = json_decode($template->editable_regions);

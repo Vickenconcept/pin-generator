@@ -123,11 +123,12 @@
     function addText() {
 
         var text = new fabric.IText('Your Text Here', {
-            left: 50,
-            top: 50,
+            left: 30,
+            top: 30,
             fill: 'black',
             tag: 'title',
-            padding: 10
+            padding: 10,
+            fontSize: 30
         });
         canvas.add(text);
         canvas.setActiveObject(text);
@@ -1203,7 +1204,8 @@
         width: 500,
         height: 100,
         tag: 'title',
-        padding: 10
+        padding: 10,
+        fontSize: 30
     });
     canvas.add(text);
 
@@ -1302,12 +1304,14 @@
                     top: obj.top,
                     width: obj.width * obj.scaleX,
                     height: obj.height * obj.scaleY,
-                    fill: patternSrc ? null : obj.fill,
+                    fill: patternSrc ? null : obj.fill ,
                     patternSrc: patternSrc || null,
                     stroke: obj.stroke || null,
                     strokeWidth: obj.strokeWidth || 0,
                     strokeDashArray: obj.strokeDashArray || null,
-                    tag: obj.tag || 'shape'
+                    tag: obj.tag || 'shape',
+                    rx: obj.rx || 0, // Rounded corners radius for x-axis
+                    ry: obj.ry || 0
                 };
             } else if (obj.type === 'video') {
                 return {

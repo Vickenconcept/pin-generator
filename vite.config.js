@@ -10,6 +10,9 @@ export default defineConfig({
         }),
         vue()
     ],
+    optimizeDeps: {
+      include: ['fabric']
+    },
     resolve: {
         alias: {
           vue: 'vue/dist/vue.esm-bundler.js',

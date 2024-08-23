@@ -27,7 +27,7 @@
 <body class="h-full">
     <div id="app" class="min-h-screen bg-purple-50 text-gray-700" x-data="{ openHelp: false }">
 
-        <input type="text" id="access_token" value="{{ access_token() }}">
+        <input type="hidden" id="access_token" value="{{ access_token() }}">
         <x-navbar />
         {{-- <x-pre-loader /> --}}
         {{ $slot }}

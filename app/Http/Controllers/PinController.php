@@ -7,6 +7,7 @@ use App\Models\Template;
 use Illuminate\Http\Request;
 use Faker\Factory as Faker;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class PinController extends Controller
 {
@@ -15,18 +16,20 @@ class PinController extends Controller
      */
     public function index(Request $request)
     {
-        // $templates = Template::get();
+        $templates = Template::get();
         $pins = Pin::get();
 
-        // foreach ($templates as $template) {
-        //     $template->editable_regions = json_decode($template->editable_regions);
-        // }
+        foreach ($templates as $template) {
+            $template->editable_regions = json_decode($template->editable_regions);
+        }
 
 
         return $request->wantsJson()
             ? response()->json($pins->toArray())
-            : view('pins.index', compact('pins'));
+            : view('pins.index', compact('pins','templates'));
     }
+
+    
     public function generate()
     {
         $templates = Template::all();
@@ -90,18 +93,34 @@ class PinController extends Controller
     public function update(Request $request, Pin $pin)
     {
    
-        // Validate the incoming request data
-        $request->validate([
+        $data =  $request->validate([
             'name' => 'sometimes|required|string',
-            'template_id' => 'sometimes|required|integer|exists:templates,id',
-            'editable_regions' => 'sometimes|required|json',
+            'template_id' => 'sometimes|required|exists:templates,id',
+            'editable_regions' => 'sometimes|required',
         ]);
 
-        // Update the pin's fields with the provided data
+
+        if ($request->has('path')) {
+            // Check if the pin already has an image
+            // if ($pin->path) {
+            //     // Delete the old image from storage
+            //     Storage::disk('public')->delete($pin->path);
+            // }
+    
+            // Save the new image
+            $imageData = $request->input('path');
+            $imageName = 'templates/' . uniqid() . '.png';
+            Storage::disk('public')->put($imageName, base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData)));
+    
+            // Update the pin's image path
+            $data['path'] = $imageName;
+        }
+
         $pin->update([
-            'name' => $request->input('name', $pin->name), // Use current value if not provided
-            'template_id' => $request->input('template_id', $pin->template_id), // Use current value if not provided
-            'editable_regions' => $request->input('editable_regions', $pin->editable_regions), // Use current value if not provided
+            'name' => $request->input('name', $pin->name),
+            'template_id' => $request->input('template_id', $pin->template_id), 
+            'editable_regions' => $request->input('editable_regions', $pin->editable_regions), 
+            'path' => $data['path'] ?? $pin->path,
         ]);
 
         // Return a JSON response indicating success
@@ -118,11 +137,11 @@ class PinController extends Controller
 
     public function generateRandomPins(Request $request)
     {
-        // $request->validate([
-        //     'template_ids' => 'required|array|min:1',
-        //     'template_ids.*' => 'exists:templates,id',
-        //     'pin_count' => 'required|integer|min:1',
-        // ]);
+        $request->validate([
+            'template_ids' => 'required|array|min:1',
+            'template_ids.*' => 'exists:templates,id',
+            'pin_count' => 'required|integer|min:1',
+        ]);
         // dd($request->all());
 
         $templateIds = $request->input('template_ids');

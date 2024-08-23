@@ -1,5 +1,6 @@
 
 import { createApp } from 'vue';
+import 'flowbite';
 
 import GenerateComponent from './components/GenerateComponent.vue';
 

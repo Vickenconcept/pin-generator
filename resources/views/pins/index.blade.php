@@ -8,7 +8,7 @@
                 {{-- <main class=" border  border-gray-700 ">
                     <div class="flex items-center justify-center h-screen bg-gray-200" id="parent_div">
                         <div class="p-4 bg-white border border-gray-300 rounded shadow-lg">
-                            <canvas id="canvas" width="300" height="450" style="border:1px solid #000;"></canvas>
+                            <canvas id="canvas" Pin Generator width="210" height="350" style="border:1px solid #000;"></canvas>
                         </div>
                     </div>
 
